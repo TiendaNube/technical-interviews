@@ -1,0 +1,21 @@
+{
+  "name": "vendor_name/bad_compression",
+  "description": "BadCompression interview problem",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "devartis",
+      "email": "jobs@devartis.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
+}

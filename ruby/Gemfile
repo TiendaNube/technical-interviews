@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+
+
+# Added at 2018-03-15 15:51:24 -0300 by lgomez:
+gem "rspec", "~> 3.7"
