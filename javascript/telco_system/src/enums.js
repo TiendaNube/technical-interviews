@@ -1,0 +1,5 @@
+const CALL_TYPE = Object.freeze({
+    LOCAL: 'LOCAL',
+    NATIONAL: 'NATIONAL',
+    INTERNATIONAL: 'INTERNATIONAL',
+});
