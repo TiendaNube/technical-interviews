@@ -42,11 +42,17 @@ class TelcoSystem {
 
     registerLocalCallBetween(aDateTime, anotherDateTime, client) {
         const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
-        const localPrice = aDateTime.getUTCHours() === this.rushHour ? CALL_BILL.local.rush : CALL_BILL.local.regular;
+        
+        let totalBilling = 0;
+        for (let i = aDateTime; i < anotherDateTime; i.setMinutes(i.getMinutes() + 1)) {
+            const currentPrice = i.getUTCHours() === this.rushHour ? CALL_BILL.local.rush : CALL_BILL.local.regular;
+            totalBilling += currentPrice;
+        }
+        
         this.registeredCalls.push({
             client,
             callDuration,
-            billing: callDuration * localPrice
+            billing: totalBilling
         })
     }
 
