@@ -1,4 +1,4 @@
-CALL_BILL = Object.freeze({
+CALLING_BILL_BY_TYPE = Object.freeze({
     local: {
         regular: 0.5,
         rush: 1
@@ -23,35 +23,37 @@ class TelcoSystem {
     }
 
     registerNationalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
+        const callDuration = this.calculateCallDuration(anotherDateTime, aDateTime);
         this.registeredCalls.push({
             client,
             callDuration,
-            billing: callDuration * CALL_BILL.national
+            billing: callDuration * CALLING_BILL_BY_TYPE.national
         })
+    }
+
+    calculateCallDuration(anotherDateTime, aDateTime) {
+        return (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
     }
 
     registerInternationalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
+        const callDuration = this.calculateCallDuration(anotherDateTime, aDateTime);
         this.registeredCalls.push({
             client,
             callDuration,
-            billing: callDuration * CALL_BILL.international
+            billing: callDuration * CALLING_BILL_BY_TYPE.international
         })
     }
 
-    registerLocalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
-        
+    registerLocalCallBetween(aDateTime, anotherDateTime, client) {        
         let totalBilling = 0;
         for (let i = aDateTime; i < anotherDateTime; i.setMinutes(i.getMinutes() + 1)) {
-            const currentPrice = i.getUTCHours() === this.rushHour ? CALL_BILL.local.rush : CALL_BILL.local.regular;
+            const currentPrice = i.getUTCHours() === this.rushHour ? CALLING_BILL_BY_TYPE.local.rush : CALLING_BILL_BY_TYPE.local.regular;
             totalBilling += currentPrice;
         }
         
         this.registeredCalls.push({
             client,
-            callDuration,
+            callDuration: this.calculateCallDuration(anotherDateTime, aDateTime),
             billing: totalBilling
         })
     }
