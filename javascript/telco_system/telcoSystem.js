@@ -7,11 +7,9 @@ CALL_BILL = Object.freeze({
     international: 2,
 })
 
-DEFAULT_RUSH_HOUR = 18;
-
 class TelcoSystem {
 
-    constructor(rushHour = DEFAULT_RUSH_HOUR) {
+    constructor(rushHour) {
         this.rushHour = rushHour;
         this.registeredCalls = [];
     }
@@ -25,7 +23,7 @@ class TelcoSystem {
     }
 
     registerNationalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = anotherDateTime.getMinutes() - aDateTime.getMinutes();
+        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
         this.registeredCalls.push({
             client,
             callDuration,
@@ -34,7 +32,7 @@ class TelcoSystem {
     }
 
     registerInternationalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = anotherDateTime.getMinutes() - aDateTime.getMinutes();
+        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
         this.registeredCalls.push({
             client,
             callDuration,
@@ -43,11 +41,12 @@ class TelcoSystem {
     }
 
     registerLocalCallBetween(aDateTime, anotherDateTime, client) {
-        const callDuration = anotherDateTime.getMinutes() - aDateTime.getMinutes();
+        const callDuration = (anotherDateTime.getTime() - aDateTime.getTime()) / (1000 * 60);
+        const localPrice = aDateTime.getUTCHours() === this.rushHour ? CALL_BILL.local.rush : CALL_BILL.local.regular;
         this.registeredCalls.push({
             client,
             callDuration,
-            billing: callDuration * aDateTime.getHours() === this.rushHour ? CALL_BILL.local.rush : CALL_BILL.local.regular
+            billing: callDuration * localPrice
         })
     }
 
